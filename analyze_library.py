@@ -313,12 +313,14 @@ def ReadClone(line, seq):
     indels = []
     for mutstring in muts:
         mutstring = mutstring.strip()
+        if not mutstring:
+            raise ValueError("No mutations specified for a clone. If a clone has no mutations, enter None in the mutation list.")
         m = submatch.search(mutstring)
         if m:
             (wt, num, mut) = (m.group('wt'), int(m.group('num')), m.group('mut'))
             assert len(wt) == len(mut)
             if seq[num - 1 : num - 1 + len(wt)] != wt:
-                raise ValueError("Mismatch at %s" % mutstring)
+                raise ValueError("Mismatch at %s. Make sure you entered this mutation correctly -- probably you entered the wrong wildtype identity or misnumbered the mutation." % mutstring)
             (icodon, ipos) = divmod(num - 1, 3)
             icodon = icodon + 1
             if ipos + len(wt) > 3:

@@ -45,6 +45,8 @@ The script will then ask you to enter the names of two input files: the sequence
 
         * Insertions should be listed like this: *insG392* for insertion of a *G* at position 392.
 
+        * If a clone has not mutations, you should enter *None*.
+
       The script will check that the specified wildtype nucleotides actually match thos e indicated in the sequence file. If they do not, an error will be raised. Note that even if your sequence contains an insertion or deletion, you must ensure that subsequent sites are still numbered according to sequential numbering of the provided sequence.
 
       Here is an example input file::
@@ -129,14 +131,48 @@ The produced PDF files are as follows:
 
 .. figure:: mutpositions.pdf
    :alt: mutpositions.pdf
+   :scale: 75%
+   :align: center
 
-   The file ``mutpositions.pdf``
+   The above plot ``mutpositions.pdf`` uses lines to show the locations of point mutations and insertions and deletions along the primary sequence.
 
 
 .. figure:: mutpositions_cumulative.pdf
    :alt: mutpositions_cumulative.pdf
+   :align: center
+   :scale: 75%
 
-   The file ``mutpositions_cumulative.pdf``
+   The above plot ``mutpositions_cumulative.pdf`` shows the cumulative distribution of substitution mutations along the primary sequence versus the line expected for a uniform distribution of mutations.
+
+
+.. figure:: ncodonmuts.pdf
+   :alt: ncodonmuts.pdf
+   :align: center
+   :scale: 75%
+
+    The above plot ``ncodonmuts.pdf`` shows the average number of nucleotide changes for each codon substitution mutation versus the expectation if each codon is equally likely to be mutated to every other codon.
+
+.. figure:: nmutdist.pdf
+   :alt: nmutdist.pdf
+   :align: center
+   :scale: 75%
+
+   The above plot ``nmutdist.pdf`` shows the distribution of the number of codon substitution mutations per clone versus the expectation for a Poisson distribution.
+
+
+.. figure:: codonmutntcomposition.pdf
+   :alt: codonmutntcomposition.pdf
+   :align: center
+   :scale: 75%
+
+   The above plot ``codonmutntcomposition.pdf`` shows the nucleotide composition (fraction of each of the nucleotides) in the parent and mutant codons for each mutation. If your library is totally unbiased for every codon mutating to every other codon with equal probability, the parent composition should be equal to the nucleotide composition of your gene (which is probably not exactly 25% of each nucleotide), whereas the mutant composition should be very close to 25% of each nucleotide.
+
+.. figure:: mutationclustering.pdf
+   :alt: mutationclustering.pdf
+   :align: center
+   :scale: 75%
+
+   The above plot ``mutationclustering.pdf`` helps you determine if mutations are clustered in primary sequence in clones with multiple substitutions. This plot is less intuitive than the others. For every clone with multiple mutations, the pairwise distance between those mutations in primary sequence is computed. The actual cumulative distribution of these pairwise distances is shown. The script then simulates sets of clones that have the exact same number of mutations per clone as observed in the actual mutation list with these mutations located randomly in primary sequence. It then computes the cumulative distribution of the pairwise distances for 1000 of these simulated libraries, and plots that. If the two distributions look similar, you library probably does not have a tendency for clustering of mutations in primary sequence. If the distributions are different, such clustering may exist.
 
 
 
