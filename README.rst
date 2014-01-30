@@ -16,7 +16,7 @@ Analyses
 ----------
 Here are the analyses (each in its own subdirectory) performed with this script:
 
-* ``2013Analysis_Influenza_NP_Aichi681`` contains the results of analyzing a mutant library of the A/Aichi/2/1968 (H3N2) influenza gene. Analysis performed by `Jesse Bloom`_.
+* ``2013Analysis_Influenza_NP_Aichi681`` contains the results of analyzing a mutant library of the A/Aichi/2/1968 (H3N2) influenza gene. Analysis performed by `Jesse Bloom`_ using `SangerMutantLibraryAnalysis v0.1`_.
 
 
 Requirements
@@ -189,3 +189,4 @@ The produced PDF files are as follows:
 .. _`scipy`: http://www.scipy.org/
 .. _`matplotlib`: http://matplotlib.org/
 .. _`ImageMagick convert` : http://www.imagemagick.org/script/convert.php
+.. _`SangerMutantLibraryAnalysis v0.1`: https://github.com/jbloom/SangerMutantLibraryAnalysis/tree/v0.1
