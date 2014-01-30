@@ -12,6 +12,12 @@ The script for this analysis is available `on GitHub`_.
 
 This script was written by `Jesse Bloom`_.
 
+Analyses
+----------
+Here are the analyses (each in its own subdirectory) performed with this script:
+
+* ``2013Analysis_Influenza_NP_Aichi681`` contains the results of analyzing a mutant library of the A/Aichi/2/1968 (H3N2) influenza gene. Analysis performed by `Jesse Bloom`_.
+
 
 Requirements
 ---------------
@@ -20,6 +26,7 @@ This analysis simply consists of a `Python`_ script. It has been tested with `Py
 
 The script requires `scipy`_ and `matplotlib`_. It has been tested with `scipy`_ 0.12.0 and `matplotlib`_ version 1.2.1, but will probably work with other versions as well.
 
+The script uses `ImageMagick convert`_ to convert ``*.pdf`` files to ``*.jpg`` files.
 
 Running the script
 -----------------------
@@ -30,7 +37,7 @@ The analysis is performed by the script *analyze_library.py*. To run the script,
 
 The script will then ask you to enter the names of two input files: the sequence file, and the mutation list file. These are both text files that should have the following format:
 
-    * **The sequence file:** this is simply a FASTA file that contains a single protein-coding gene. This should be the gene that you are sequencing. For example, here is an example of such a file::
+    * **The sequence file:** this is simply a FASTA file that contains a single protein-coding gene. This should be the gene that you are sequencing. For example, here is an example of such a file (``Aichi68-NP.fasta``)::
 
         >Aichi68-NP
         atggcgtcccaaggcaccaaacggtcttatgaacagatggaaactgatggggaacgccagaatgcaactgagatcagagcatccgtcgggaagatgattgatggaattggacgattctacatccaaatgtgcactgaacttaaactcagtgattatgaggggcgactgatccagaacagcttaacaatagagagaatggtgctctctgcttttgacgaaagaaggaataaatatctggaagaacatcccagcgcggggaaggatcctaagaaaactggaggacccatatacaagagagtagatagaaagtggatgagggaactcgtcctttatgacaaagaagaaataaggcgaatctggcgccaagccaataatggtgatgatgcaacagctggtctgactcacatgatgatctggcattccaatttgaatgatacaacataccagaggacaagagctcttgttcgcaccggcatggatcccaggatgtgctctctgatgcagggttcgactctccctaggaggtctggagctgcaggcgctgcagtcaaaggagttgggacaatggtgatggagttgataaggatgatcaaacgtgggatcaatgatcggaacttctggagaggtgaaaatggacgaaaaacaaggagtgcttacgagagaatgtgcaacattctcaaaggaaaatttcaaacagctgcacaaagggcaatgatggatcaagtgagagaaagtcggaacccaggaaatgctgagatcgaagatctcatctttctggcacggtctgcactcatattgagagggtcagttgctcacaaatcttgtctgcccgcctgtgtgtatggacctgccgtagccagtggctacgacttcgaaaaagagggatactctttagtgggaatagaccctttcaaactgcttcaaaacagccaagtatacagcctaatcagaccgaacgagaatccagcacacaagagtcagctggtgtggatggcatgcaattctgctgcatttgaagatctaagagtattaagcttcatcagagggaccaaagtatccccaagggggaaactttccactagaggagtacaaattgcttcaaatgaaaacatggatgctatggaatcaagtactcttgaactgagaagcaggtactgggccataagaaccagaagtggaggaaacactaatcaacagagggcctctgcaggtcaaatcagtgtgcaacctgcattttctgtgcaaagaaacctcccatttgacaaaccaaccatcatggcagcattcactgggaatacagagggaagaacatcagacatgagggcagaaattataaggatgatggaaggtgcaaaaccagaagaaatgtccttccaggggcggggagtcttcgagctctcggacgaaagggcagcgaacccgatcgtgccctcttttgacatgagtaatgaaggatcttatttcttcggagacaatgcagaggagtacgacaattaa
@@ -49,7 +56,7 @@ The script will then ask you to enter the names of two input files: the sequence
 
       The script will check that the specified wildtype nucleotides actually match thos e indicated in the sequence file. If they do not, an error will be raised. Note that even if your sequence contains an insertion or deletion, you must ensure that subsequent sites are still numbered according to sequential numbering of the provided sequence.
 
-      Here is an example input file::
+      Here is an example input file (``mutation_list.txt``)::
 
         # Sequential 1, 2, ... numbering from start codon of Aichi68-NP coding sequence
         #
@@ -129,48 +136,48 @@ The script will print some information about the mutation statistics to standard
 The produced PDF files are as follows:
 
 
-.. figure:: mutpositions.pdf
+.. figure:: 2013Analysis_Influenza_NP_Aichi68/mutpositions.jpg
    :alt: mutpositions.pdf
-   :scale: 70%
+   :width: 35%
    :align: center
 
    The above plot ``mutpositions.pdf`` uses lines to show the locations of point mutations and insertions and deletions along the primary sequence.
 
 
-.. figure:: mutpositions_cumulative.pdf
+.. figure:: 2013Analysis_Influenza_NP_Aichi68/mutpositions_cumulative.jpg
    :alt: mutpositions_cumulative.pdf
    :align: center
-   :scale: 70%
+   :width: 35%
 
    The above plot ``mutpositions_cumulative.pdf`` shows the cumulative distribution of substitution mutations along the primary sequence versus the line expected for a uniform distribution of mutations.
 
 
-.. figure:: ncodonmuts.pdf
+.. figure:: 2013Analysis_Influenza_NP_Aichi68/ncodonmuts.jpg
    :alt: ncodonmuts.pdf
    :align: center
-   :scale: 70%
+   :width: 35%
 
    The above plot ``ncodonmuts.pdf`` shows the average number of nucleotide changes for each codon substitution mutation versus the expectation if each codon is equally likely to be mutated to every other codon.
 
-.. figure:: nmutdist.pdf
+.. figure:: 2013Analysis_Influenza_NP_Aichi68/nmutdist.jpg
    :alt: nmutdist.pdf
    :align: center
-   :scale: 70%
+   :width: 35%
 
    The above plot ``nmutdist.pdf`` shows the distribution of the number of codon substitution mutations per clone versus the expectation for a Poisson distribution.
 
 
-.. figure:: codonmutntcomposition.pdf
+.. figure:: 2013Analysis_Influenza_NP_Aichi68/codonmutntcomposition.jpg
    :alt: codonmutntcomposition.pdf
    :align: center
-   :scale: 70%
+   :width: 35%
 
    The above plot ``codonmutntcomposition.pdf`` shows the nucleotide composition (fraction of each of the nucleotides) in the parent and mutant codons for each mutation. If your library is totally unbiased for every codon mutating to every other codon with equal probability, the parent composition should be equal to the nucleotide composition of your gene (which is probably not exactly 25% of each nucleotide), whereas the mutant composition should be very close to 25% of each nucleotide.
 
-.. figure:: mutationclustering.pdf
+.. figure:: 2013Analysis_Influenza_NP_Aichi68/mutationclustering.jpg
    :alt: mutationclustering.pdf
    :align: center
-   :scale: 70%
+   :width: 35%
 
    The above plot ``mutationclustering.pdf`` helps you determine if mutations are clustered in primary sequence in clones with multiple substitutions. This plot is less intuitive than the others. For every clone with multiple mutations, the pairwise distance between those mutations in primary sequence is computed. The actual cumulative distribution of these pairwise distances is shown. The script then simulates sets of clones that have the exact same number of mutations per clone as observed in the actual mutation list with these mutations located randomly in primary sequence. It then computes the cumulative distribution of the pairwise distances for 1000 of these simulated libraries, and plots that. If the two distributions look similar, you library probably does not have a tendency for clustering of mutations in primary sequence. If the distributions are different, such clustering may exist.
 
@@ -181,3 +188,4 @@ The produced PDF files are as follows:
 .. _`Python`: http://www.python.org/
 .. _`scipy`: http://www.scipy.org/
 .. _`matplotlib`: http://matplotlib.org/
+.. _`ImageMagick convert` : http://www.imagemagick.org/script/convert.php
