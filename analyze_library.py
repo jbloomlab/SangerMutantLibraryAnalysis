@@ -188,8 +188,8 @@ def PlotNMutDist(nmutations, plotfile, title):
     plotfile -> name of the plot file that we create.
     title -> string giving the plot title.
     """
-    pylab.figure(figsize=(4.75, 2.75))
-    (lmargin, rmargin, bmargin, tmargin) = (0.1, 0.01, 0.18, 0.07)
+    pylab.figure(figsize=(4.7, 2.75))
+    (lmargin, rmargin, bmargin, tmargin) = (0.13, 0.01, 0.18, 0.07)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
     nseqs = len(nmutations)
     mavg = scipy.mean(nmutations)
