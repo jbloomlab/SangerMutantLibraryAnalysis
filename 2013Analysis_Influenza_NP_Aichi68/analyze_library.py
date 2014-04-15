@@ -81,8 +81,8 @@ def PlotMutationClustering(mutation_nums_by_clone, ncodons, plotfile, title, nsi
         simul_tot += simulated_distances[d] / float(nsimulated)
         actual_cumul.append(actual_tot)
         simulated_cumul.append(simul_tot)
-    pylab.figure(figsize=(7, 3.5))
-    (lmargin, rmargin, bmargin, tmargin) = (0.1, 0.01, 0.16, 0.08)
+    pylab.figure(figsize=(5, 2.7))
+    (lmargin, rmargin, bmargin, tmargin) = (0.11, 0.01, 0.17, 0.07)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
     barwidth = 0.7
     xs = [x for x in range(1, ncodons)]
@@ -95,7 +95,7 @@ def PlotMutationClustering(mutation_nums_by_clone, ncodons, plotfile, title, nsi
     pylab.gca().yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(5))
     pylab.xlabel('distance between pairs of mutations')
     pylab.ylabel('cumulative fraction')
-    pylab.legend((actual[0], pred[0]), ('actual', 'expected'), loc='upper left', numpoints=1, handlelength=1, ncol=2)
+    pylab.legend((actual[0], pred[0]), ('actual', 'expected'), loc='upper left', numpoints=1, handlelength=1, ncol=2, borderaxespad=0, handletextpad=0.4, columnspacing=0.9)
     pylab.title(title, fontsize=12)
     pylab.savefig(plotfile)
     time.sleep(0.5)
@@ -122,8 +122,8 @@ def PlotCodonMutNTComposition(allmutations, plotfile, title):
             wtntcounts[nt] += 1 / ntot
         for nt in mutcodon:
             mutntcounts[nt] += 1 / ntot
-    pylab.figure(figsize=(5, 3.))
-    (lmargin, rmargin, bmargin, tmargin) = (0.12, 0.01, 0.16, 0.08)
+    pylab.figure(figsize=(4.5, 2.7))
+    (lmargin, rmargin, bmargin, tmargin) = (0.12, 0.01, 0.17, 0.07)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
     barwidth = 0.35
     xs = [i for i in range(len(nts))]
@@ -131,12 +131,12 @@ def PlotCodonMutNTComposition(allmutations, plotfile, title):
     nmut = pylab.bar([x for x in xs], [mutntcounts[nt] for nt in nts], width=barwidth, color='red')
     #pred = pylab.plot(xs, nexpected, 'rx', markersize=6, mew=3)
     pylab.gca().set_xlim([-0.5, 3.5])
-    pylab.gca().set_ylim([0, max(wtntcounts.values() + mutntcounts.values()) * 1.25])
+    pylab.gca().set_ylim([0, max(wtntcounts.values() + mutntcounts.values()) * 1.35])
     #pylab.gca().xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
     pylab.gca().yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(5))
     pylab.xlabel('nucleotide')
     pylab.ylabel('codon composition')
-    pylab.legend((nwt[0], nmut[0]), ('parent codons', 'mutant codons'), loc='upper center', numpoints=1, handlelength=1, ncol=2, borderaxespad=0.01)
+    pylab.legend((nwt[0], nmut[0]), ('parent codons', 'mutant codons'), loc='upper center', numpoints=1, handlelength=1, ncol=2, borderaxespad=0.01, columnspacing=1, handletextpad=0.4)
     pylab.title(title, fontsize=12)
     pylab.xticks(pylab.arange(0, 4, 1), tuple(nts))
     pylab.savefig(plotfile)
@@ -151,8 +151,8 @@ def PlotNCodonMuts(allmutations, plotfile, title):
     plotfile -> name of the plot file we create.
     title -> string giving the plot title.
     """
-    pylab.figure(figsize=(5, 3.))
-    (lmargin, rmargin, bmargin, tmargin) = (0.1, 0.01, 0.16, 0.08)
+    pylab.figure(figsize=(4.2, 2.5))
+    (lmargin, rmargin, bmargin, tmargin) = (0.12, 0.01, 0.18, 0.07)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
     nchanges = {1:0, 2:0, 3:0}
     nmuts = len(allmutations)
@@ -170,9 +170,9 @@ def PlotNCodonMuts(allmutations, plotfile, title):
     pylab.gca().set_ylim([0, max(nactual + nexpected) * 1.1])
     pylab.gca().xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
     pylab.gca().yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(5))
-    pylab.xlabel('number of nucleotide changes in codon mutation')
+    pylab.xlabel('nucleotide changes in codon mutation')
     pylab.ylabel('number of mutations')
-    pylab.legend((bar[0], pred[0]), ('actual', 'expected'), loc='upper left', numpoints=1, handlelength=1)
+    pylab.legend((bar[0], pred[0]), ('actual', 'expected'), loc='upper left', numpoints=1, handlelength=1, borderaxespad=0)
     pylab.title(title, fontsize=12)
     pylab.savefig(plotfile)
     time.sleep(0.5)
@@ -188,8 +188,8 @@ def PlotNMutDist(nmutations, plotfile, title):
     plotfile -> name of the plot file that we create.
     title -> string giving the plot title.
     """
-    pylab.figure(figsize=(7, 3.5))
-    (lmargin, rmargin, bmargin, tmargin) = (0.1, 0.01, 0.16, 0.08)
+    pylab.figure(figsize=(4.75, 2.75))
+    (lmargin, rmargin, bmargin, tmargin) = (0.1, 0.01, 0.18, 0.07)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
     nseqs = len(nmutations)
     mavg = scipy.mean(nmutations)
@@ -206,7 +206,7 @@ def PlotNMutDist(nmutations, plotfile, title):
     pylab.gca().yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(5))
     pylab.xlabel('number of mutated codons')
     pylab.ylabel('number of clones')
-    pylab.legend((bar[0], pred[0]), ('actual', 'Poisson'), loc='upper right', numpoints=1, handlelength=1, ncol=2)
+    pylab.legend((bar[0], pred[0]), ('actual', 'Poisson'), loc='upper right', numpoints=1, handlelength=1, ncol=2, borderaxespad=0)
     #
     # Kolmogorov-Smirnov test
     def F(n):
@@ -251,7 +251,7 @@ def PlotGeneMutDist(genelength, sub_nums, indel_nums, plotfile, cumulplotfile, t
     indels = [-indels[x] for x in xs]
     barwidth = 1.0
     xlefts = [x - barwidth / 2. for x in xs]
-    pylab.figure(figsize=(7, 3))
+    pylab.figure(figsize=(5.5, 2.5))
     (lmargin, rmargin, bmargin, tmargin) = (0.1, 0.01, 0.2, 0.09)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
     pylab.bar(xlefts, subs, width=barwidth)
@@ -274,15 +274,15 @@ def PlotGeneMutDist(genelength, sub_nums, indel_nums, plotfile, cumulplotfile, t
             cumul.append(cumul[-1] + subs[x - 1] / float(nsubs))
         else:
             cumul.append(subs[x - 1] / float(nsubs))
-    pylab.figure(figsize=(7, 3.6))
-    (lmargin, rmargin, bmargin, tmargin) = (0.1, 0.01, 0.16, 0.08)
+    pylab.figure(figsize=(5.25, 2.75))
+    (lmargin, rmargin, bmargin, tmargin) = (0.11, 0.03, 0.16, 0.09)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
     linear = [x / float(genelength) for x in xs]
-    pylab.plot(xs, cumul, 'b-', label='actual cumulative distribution')
+    pylab.plot(xs, cumul, 'b-', label='actual distribution')
     pylab.plot(xs, linear, 'r-', label='uniform distribution')
     pylab.gca().set_xlim([0.5, genelength + 0.5])
     pylab.gca().set_ylim([0, 1])
-    pylab.ylabel('cumulative fraction of substitutions')
+    pylab.ylabel('cumulative fraction')
     pylab.xlabel('codon number')
     pylab.legend(loc='upper left')
     pylab.title(title, fontsize=12)
@@ -411,7 +411,7 @@ def main():
         print "  %s: %.5f" % (key, n_muttypes[key] / denom)
     nclones = len(clone_d)
     print "\nNow creating the output PDF plot files..."
-    title = "%d clones, average of %.1f codon substitutions, average of %.1f indels" % (nclones, len(sub_nums) / float(nclones), len(indel_nums) / float(nclones))
+    title = "%d clones, avg. %.1f codon substitutions, avg. %.1f indels" % (nclones, len(sub_nums) / float(nclones), len(indel_nums) / float(nclones))
     PlotGeneMutDist(ncodons, sub_nums, indel_nums, "mutpositions.pdf", "mutpositions_cumulative.pdf", title)
     os.system('convert -density 150 mutpositions.pdf mutpositions.jpg')
     os.system('convert -density 150 mutpositions_cumulative.pdf mutpositions_cumulative.jpg')
