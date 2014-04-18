@@ -16,7 +16,9 @@ Analyses
 ----------
 Here are the analyses (each in its own subdirectory) performed with this script:
 
-* ``2013Analysis_Influenza_NP_Aichi681`` contains the results of analyzing a mutant library of the A/Aichi/2/1968 (H3N2) influenza gene. Analysis performed by `Jesse Bloom`_ using `SangerMutantLibraryAnalysis v0.1`_.
+* ``2013Analysis_Influenza_NP_Aichi68`` contains the results of analyzing a mutant library of the A/Aichi/2/1968 (H3N2) influenza gene. Analysis performed by `Jesse Bloom`_ using `SangerMutantLibraryAnalysis v0.1`_.
+
+* ``2014Analysis_Influenza_HA_WSN`` contains the results of analyzing a mutant library of the A/WSN/1933 (H1N1) influenza gene. Analysis performed by `Jesse Bloom`_ using `SangerMutantLibraryAnalysis v0.2`_.
 
 
 Requirements
@@ -136,7 +138,7 @@ The script will print some information about the mutation statistics to standard
 The produced PDF files are as follows:
 
 
-.. figure:: 2013Analysis_Influenza_NP_Aichi68/mutpositions.jpg
+.. figure:: 2014Analysis_Influenza_HA_WSN/mutpositions.jpg
    :alt: mutpositions.pdf
    :width: 35%
    :align: center
@@ -144,7 +146,7 @@ The produced PDF files are as follows:
    The above plot ``mutpositions.pdf`` uses lines to show the locations of point mutations and insertions and deletions along the primary sequence.
 
 
-.. figure:: 2013Analysis_Influenza_NP_Aichi68/mutpositions_cumulative.jpg
+.. figure:: 2014Analysis_Influenza_HA_WSN/mutpositions_cumulative.jpg
    :alt: mutpositions_cumulative.pdf
    :align: center
    :width: 35%
@@ -152,14 +154,14 @@ The produced PDF files are as follows:
    The above plot ``mutpositions_cumulative.pdf`` shows the cumulative distribution of substitution mutations along the primary sequence versus the line expected for a uniform distribution of mutations.
 
 
-.. figure:: 2013Analysis_Influenza_NP_Aichi68/ncodonmuts.jpg
+.. figure:: 2014Analysis_Influenza_HA_WSN/ncodonmuts.jpg
    :alt: ncodonmuts.pdf
    :align: center
    :width: 35%
 
    The above plot ``ncodonmuts.pdf`` shows the average number of nucleotide changes for each codon substitution mutation versus the expectation if each codon is equally likely to be mutated to every other codon.
 
-.. figure:: 2013Analysis_Influenza_NP_Aichi68/nmutdist.jpg
+.. figure:: 2014Analysis_Influenza_HA_WSN/nmutdist.jpg
    :alt: nmutdist.pdf
    :align: center
    :width: 35%
@@ -167,14 +169,14 @@ The produced PDF files are as follows:
    The above plot ``nmutdist.pdf`` shows the distribution of the number of codon substitution mutations per clone versus the expectation for a Poisson distribution.
 
 
-.. figure:: 2013Analysis_Influenza_NP_Aichi68/codonmutntcomposition.jpg
+.. figure:: 2014Analysis_Influenza_HA_WSN/codonmutntcomposition.jpg
    :alt: codonmutntcomposition.pdf
    :align: center
    :width: 35%
 
    The above plot ``codonmutntcomposition.pdf`` shows the nucleotide composition (fraction of each of the nucleotides) in the parent and mutant codons for each mutation. If your library is totally unbiased for every codon mutating to every other codon with equal probability, the parent composition should be equal to the nucleotide composition of your gene (which is probably not exactly 25% of each nucleotide), whereas the mutant composition should be very close to 25% of each nucleotide.
 
-.. figure:: 2013Analysis_Influenza_NP_Aichi68/mutationclustering.jpg
+.. figure:: 2014Analysis_Influenza_HA_WSN/mutationclustering.jpg
    :alt: mutationclustering.pdf
    :align: center
    :width: 35%
@@ -189,4 +191,5 @@ The produced PDF files are as follows:
 .. _`scipy`: http://www.scipy.org/
 .. _`matplotlib`: http://matplotlib.org/
 .. _`ImageMagick convert` : http://www.imagemagick.org/script/convert.php
+.. _`SangerMutantLibraryAnalysis v0.2`: https://github.com/jbloom/SangerMutantLibraryAnalysis/tree/v0.2
 .. _`SangerMutantLibraryAnalysis v0.1`: https://github.com/jbloom/SangerMutantLibraryAnalysis/tree/v0.1
