@@ -152,8 +152,8 @@ def PlotNCodonMuts(allmutations, plotfile, title):
     plotfile -> name of the plot file we create.
     title -> string giving the plot title.
     """
-    pylab.figure(figsize=(4.2, 2.5))
-    (lmargin, rmargin, bmargin, tmargin) = (0.12, 0.01, 0.18, 0.07)
+    pylab.figure(figsize=(3.5, 2.25))
+    (lmargin, rmargin, bmargin, tmargin) = (0.16, 0.01, 0.21, 0.07)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
     nchanges = {1:0, 2:0, 3:0}
     nmuts = len(allmutations)
@@ -173,7 +173,7 @@ def PlotNCodonMuts(allmutations, plotfile, title):
     pylab.gca().yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(5))
     pylab.xlabel('nucleotide changes in codon mutation')
     pylab.ylabel('number of mutations')
-    pylab.legend((bar[0], pred[0]), ('actual', 'expected'), loc='upper left', numpoints=1, handlelength=1, borderaxespad=0)
+    pylab.legend((bar[0], pred[0]), ('actual', 'expected'), loc='upper left', numpoints=1, handlelength=0.9, borderaxespad=0, handletextpad=0.4)
     pylab.title(title, fontsize=12)
     pylab.savefig(plotfile)
     time.sleep(0.5)
