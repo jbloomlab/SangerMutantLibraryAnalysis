@@ -171,7 +171,7 @@ def PlotNCodonMuts(allmutations, plotfile, title):
     pylab.gca().set_ylim([0, max(nactual + nexpected) * 1.1])
     pylab.gca().xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
     pylab.gca().yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(5))
-    pylab.xlabel('nucleotide changes in codon mutation')
+    pylab.xlabel('nucleotide changes in codon')
     pylab.ylabel('number of mutations')
     pylab.legend((bar[0], pred[0]), ('actual', 'expected'), loc='upper left', numpoints=1, handlelength=0.9, borderaxespad=0, handletextpad=0.4)
     pylab.title(title, fontsize=12)

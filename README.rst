@@ -41,8 +41,8 @@ The script will then ask you to enter the names of two input files: the sequence
 
     * **The sequence file:** this is simply a FASTA file that contains a single protein-coding gene. This should be the gene that you are sequencing. For example, here is an example of such a file (``Aichi68-NP.fasta``)::
 
-        >Aichi68-NP
-        atggcgtcccaaggcaccaaacggtcttatgaacagatggaaactgatggggaacgccagaatgcaactgagatcagagcatccgtcgggaagatgattgatggaattggacgattctacatccaaatgtgcactgaacttaaactcagtgattatgaggggcgactgatccagaacagcttaacaatagagagaatggtgctctctgcttttgacgaaagaaggaataaatatctggaagaacatcccagcgcggggaaggatcctaagaaaactggaggacccatatacaagagagtagatagaaagtggatgagggaactcgtcctttatgacaaagaagaaataaggcgaatctggcgccaagccaataatggtgatgatgcaacagctggtctgactcacatgatgatctggcattccaatttgaatgatacaacataccagaggacaagagctcttgttcgcaccggcatggatcccaggatgtgctctctgatgcagggttcgactctccctaggaggtctggagctgcaggcgctgcagtcaaaggagttgggacaatggtgatggagttgataaggatgatcaaacgtgggatcaatgatcggaacttctggagaggtgaaaatggacgaaaaacaaggagtgcttacgagagaatgtgcaacattctcaaaggaaaatttcaaacagctgcacaaagggcaatgatggatcaagtgagagaaagtcggaacccaggaaatgctgagatcgaagatctcatctttctggcacggtctgcactcatattgagagggtcagttgctcacaaatcttgtctgcccgcctgtgtgtatggacctgccgtagccagtggctacgacttcgaaaaagagggatactctttagtgggaatagaccctttcaaactgcttcaaaacagccaagtatacagcctaatcagaccgaacgagaatccagcacacaagagtcagctggtgtggatggcatgcaattctgctgcatttgaagatctaagagtattaagcttcatcagagggaccaaagtatccccaagggggaaactttccactagaggagtacaaattgcttcaaatgaaaacatggatgctatggaatcaagtactcttgaactgagaagcaggtactgggccataagaaccagaagtggaggaaacactaatcaacagagggcctctgcaggtcaaatcagtgtgcaacctgcattttctgtgcaaagaaacctcccatttgacaaaccaaccatcatggcagcattcactgggaatacagagggaagaacatcagacatgagggcagaaattataaggatgatggaaggtgcaaaaccagaagaaatgtccttccaggggcggggagtcttcgagctctcggacgaaagggcagcgaacccgatcgtgccctcttttgacatgagtaatgaaggatcttatttcttcggagacaatgcagaggagtacgacaattaa
+        >WSN-HA
+        ATGAAGGCAAAACTACTGGTCCTGTTATATGCATTTGTAGCTACAGATGCAGACACAATATGTATAGGCTACCATGCGAACAACTCAACCGACACTGTTGACACAATACTCGAGAAGAATGTGGCAGTGACACATTCTGTTAACCTGCTCGAAGACAGCCACAACGGGAAACTATGTAAATTAAAAGGAATAGCCCCACTACAATTGGGGAAATGTAACATCACCGGATGGCTCTTGGGAAATCCAGAATGCGACTCACTGCTTCCAGCGAGATCATGGTCCTACATTGTAGAAACACCAAACTCTGAGAATGGAGCATGTTATCCAGGAGATCTCATCGACTATGAGGAACTGAGGGAGCAATTGAGCTCAGTATCATCATTAGAAAGATTCGAAATATTTCCCAAGGAAAGTTCATGGCCCAACCACACATTCAACGGAGTAACAGTATCATGCTCCCATAGGGGAAAAAGCAGTTTTTACAGAAATTTGCTATGGCTGACGAAGAAGGGGGATTCATACCCAAAGCTGACCAATTCCTATGTGAACAATAAAGGGAAAGAAGTCCTTGTACTATGGGGTGTTCATCACCCGTCTAGCAGTGATGAGCAACAGAGTCTCTATAGTAATGGAAATGCTTATGTCTCTGTAGCGTCTTCAAATTATAACAGGAGATTCACCCCGGAAATAGCTGCAAGGCCCAAAGTAAGAGATCAACATGGGAGGATGAACTATTACTGGACCTTGCTAGAACCCGGAGACACAATAATATTTGAGGCAACTGGTAATCTAATAGCACCATGGTATGCTTTCGCACTGAGTAGAGGGTTTGAGTCCGGCATCATCACCTCAAACGCGTCAATGCATGAGTGTAACACGAAGTGTCAAACACCCCAGGGAGCTATAAACAGCAATCTCCCTTTCCAGAATATACACCCAGTCACAATAGGAGAGTGCCCAAAATATGTCAGGAGTACCAAATTGAGGATGGTTACAGGACTAAGAAACATCCCATCCATTCAATACAGAGGTCTATTTGGAGCCATTGCTGGTTTTATTGAGGGGGGATGGACTGGAATGATAGATGGATGGTATGGTTATCATCATCAGAATGAACAGGGATCAGGCTATGCAGCGGATCAAAAAAGCACACAAAATGCCATTAACGGGATTACAAACAAGGTGAACTCTGTTATCGAGAAAATGAACACTCAATTCACAGCTGTGGGTAAAGAATTCAACAACTTAGAAAAAAGGATGGAAAATTTAAATAAAAAAGTTGATGATGGGTTTCTGGACATTTGGACATATAATGCAGAATTGTTAGTTCTACTGGAAAATGAAAGGACTTTGGATTTCCATGACTTAAATGTGAAGAATCTGTACGAGAAAGTAAAAAGCCAATTAAAGAATAATGCCAAAGAAATCGGAAATGGGTGTTTTGAGTTCTACCACAAGTGTGACAATGAATGCATGGAAAGTGTAAGAAATGGGACTTATGATTATCCAAAATATTCAGAAGAATCAAAGTTGAACAGGGAAAAGATAGATGGAGTGAAATTGGAATCAATGGGGGTGTATCAGATTCTGGCGATCTACTCAACTGTCGCCAGTTCACTGGTGCTTTTGGTCTCCCTGGGGGCAATCAGTTTCTGGATGTGTTCTAATGGGTCTTTGCAGTGCAGAATATGCATCTGA 
 
     * **The mutation list file:** this is a text file that lists the mutations. The mutations should be numbered in sequential (1, 2, ...) numbering according to the sequence specified in the sequence file. Lines in this file that are empty or begin with the character # are ignored. All other lines should specify a clone and all identified mutations. The clone name should be the first entry on the line, followed by a colon. There is then a comma-delimited list of the mutations. The mutations are indicated as follows:
 
@@ -58,82 +58,91 @@ The script will then ask you to enter the names of two input files: the sequence
 
       The script will check that the specified wildtype nucleotides actually match thos e indicated in the sequence file. If they do not, an error will be raised. Note that even if your sequence contains an insertion or deletion, you must ensure that subsequent sites are still numbered according to sequential numbering of the provided sequence.
 
-      Here is an example input file (``mutation_list.txt``)::
+      Here is an example input file::
 
-        # Sequential 1, 2, ... numbering from start codon of Aichi68-NP coding sequence
-        #
-        # Sequencing from Jan-25-2013 for clones 1 to 3 for each.
-        # Sequencing from Jan-26-2013 for clones 4 to 8 for each.
-        WT1round3-1: delCT392, AG583CT
-        WT1round3-2: ATG991TCC, AA1249CG, delA1257, TT1390GA
-        WT1round3-3: AAA271CGG, TT1285AC, G1378T
-        WT1round3-4: AA175GC, CTC1396GAA
-        WT1round3-5: TAT232GTA, ACA388TAC, CT1007AC, AAT1492GCA
-        WT1round3-6: AAC925GGG, GGA1303TCG
-        WT1round3-7: None
-        WT1round3-8: GGA553ATC, A696C, TG713AT, CA1208GT
-        #
-        WT2round3-1: GC1148AA
-        WT2round3-2: AC16CT, AG269GC, TTC1390AGA
-        WT2round3-3: CCC481AAG, AC1168GT
-        WT2round3-4: TTT211GTA, C322G
-        WT2round3-6: AAA817TTT, AGA1306CTC, delA1311
-        WT2round3-7: AG92CC, ACA436GTC, ATG1441GAA
-        WT2round3-8: C397T, TA854CT, CCG952ACA, A1314T, GAG1483CCC
-        #
-        N334H1round3-1: GT808AC
-        N334H1round3-2: None
-        N334H1round3-3: GAT379TAA, G662T, CG1415GC
-        N334H1round3-4: A1078G
-        N334H1round3-5: T825C, AT1111TA, AAT1189GCG, ACA1309CCT
-        N334H1round3-6: G241A, AAA550TGG
-        N334H1round3-7: TCT1237CCG, TC1286GG
-        N334H1round3-8: TG130AC, AG349GA, G391C, AT487TA, AG799CA
-        #
-        N334H2round3-1: ATG313CGT, GC929CA, GTG985TGA, AAT1492TTG
-        N334H2round3-2: A12C, A1171G, CCA1267GTG
-        N334H2round3-3: AGA1024CTG
-        N334H2round3-4: G6C, GG160TT, CC265TT, GGT376AAC, C512T, TCT1003GCC
-        N334H2round3-6: CCC247TTT, TCT784GAG
-        N334H2round3-7: ACT67GTG, AGA193CGT, T616A, TAC1153GTA, AGT1174CAC
-        N334H2round3-8: AT425GC, CC470AT, AGA1165GTC, GCA1324CAG
+        # Sequencing results for 3 WSN-HA mutation libraries. 
+        # Results from Aug-28 2013 ans Sept-3 2013.
+        # Twelve single colonies analyzed for each library replicate with 3 primers. 
+        # Total 36 samples.  
 
+        1-1: AAG406GAT, GA1342AG
+        1-2: GTA442TAC, AAC667GCT, AAC853GGA
+        1-3: ATG1204GTC
+        1-4: G373A, G510T
+        1-5: AAT118TTG, GGT784CGC, CA1220AT
+        1-6: GCA778TAC, TT1019CG, ATA1081GGG, A1370C
+        1-7: AGG670TCC, A1232T, delA1544
+        1-8: None
+
+        1-9: AAT535GAG
+        1-10: ACA1150TAC, ATT1171CCG, GTT1192CTA
+        1-11: C1175A
+        1-12: TC566AT, C855T, C912T
+        2-1: CTA172AGG, TC1238AT, T1675G
+        2-2: GCT1048CAC
+        2-3: AGC472TTT, TAT733CTG, G1070A
+        #2-4: mixed template, clearly colony is actually two different mutants 
+
+        2-5: TCA256CCC, GA832CG, AGG985CGT
+        2-6: T818A, G834A, GG1288TC
+        2-7: TTC1237AAT
+        2-8: GA307CG, T1086A, AG1199GC
+        2-9: GGC67CAG, insG1121, AGG1537TAC
+        2-10: GG238AC, TGT319CAA, AAG406GAC, C1136A, AA1337TG, GT1621TC
+        2-11: A64G, GGG208AAT, ATG727TCA, GG986CC
+        2-12: TGT871AAA, TGT1660GAG, TG1690AT
+        3-1: G207T
+
+        3-2: None
+        3-3: ACA1150TAC
+
+        3-4: AAC436TAT, T964G, TCT1189GTA
+        3-5: GA272TC, TCC1015CAG
+
+        3-6: TCA376ACT, T1074G, A1283T
+        3-7: G67C
+        3-8: GAT514TAG
+
+        #3-9: bad sequencing read with forward primer
+        3-10: AG625CT, AGC910TTT
+        3-11: T606G
+        3-12: ATT1162CTA
 
 Output of the script
 ----------------------
 
 The script will print some information about the mutation statistics to standard output. It will also create some PDF plot files. For example, running the script using the example sequence file *Aichi68-NP.fasta* and the example mutation list *mutation_list.txt* provided with this script `on GitHub`_ will produce the following information printed to standard output::
 
-   Beginning analysis.
+    Beginning analysis.
 
-   Enter the name of the FASTA file containing the gene sequence: Aichi68-NP.fasta
-   Read a coding sequence of length 1497
+    Enter the name of the FASTA file containing the gene sequence: WSN-HA.fasta
+    Read a coding sequence of length 1698
 
-   Enter the name of the file containing the list of mutations: mutation_list.txt
+    Enter the name of the file containing the list of mutations: wsn_mutations_090413.txt
 
-   Reading mutations from mutation_list.txt
-   Read entries for 30 clones
+    Reading mutations from wsn_mutations_090413.txt
+    Read entries for 34 clones
 
-   Substitutions begin at following positions: 2, 4, 6, 23, 31, 44, 54, 59, 65, 71, 78, 81, 83, 89, 90, 91, 105, 108, 117, 126, 127, 130, 131, 133, 142, 146, 157, 161, 163, 171, 184, 185, 195, 206, 221, 232, 238, 262, 267, 270, 273, 275, 285, 309, 310, 318, 329, 331, 335, 336, 342, 360, 371, 383, 385, 389, 390, 391, 392, 397, 403, 413, 417, 423, 429, 429, 435, 436, 437, 438, 442, 460, 464, 464, 466, 472, 481, 495, 498, 498
+    Substitutions begin at following positions: 22, 23, 23, 40, 58, 69, 70, 80, 86, 91, 103, 107, 125, 126, 136, 136, 146, 148, 158, 170, 172, 179, 189, 202, 209, 223, 224, 243, 245, 260, 262, 273, 278, 278, 285, 285, 291, 304, 304, 322, 329, 329, 339, 340, 350, 357, 358, 361, 362, 379, 384, 384, 388, 391, 392, 397, 398, 400, 402, 407, 411, 413, 413, 428, 430, 446, 448, 457, 513, 541, 554, 559, 564
 
-   Indels begin at following positions: 131, 419, 437
+    Indels begin at following positions: 374, 515
 
-   Found a total of 80 substitutions out of 14970 codons sequenced (0.0053)
+    Found a total of 73 substitutions out of 19244 codons sequenced (0.0038)
 
-   Here are the fractions with different numbers of nucleotide mutations:
-     1 nucleotide mutations: 0.00100
-     2 nucleotide mutations: 0.00227
-     3 nucleotide mutations: 0.00207
+    Here are the fractions with different numbers of nucleotide mutations:
+      1 nucleotide mutations: 0.00104
+      2 nucleotide mutations: 0.00145
+      3 nucleotide mutations: 0.00130
 
-   Here are the fractions of mutation types
-     synonymous: 0.00040
-     nonsynonymous: 0.00494
-     stop codon: 0.00000
+    Here are the fractions of mutation types
+      synonymous: 0.00026
+      nonsynonymous: 0.00353
+      stop codon: 0.00000
 
     Now creating the output PDF plot files...
     The output PDF file plots have now all been created.
 
-    Script complete.
+    Script complete
 
 The produced PDF files are as follows:
 
