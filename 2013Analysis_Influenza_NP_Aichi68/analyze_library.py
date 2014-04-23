@@ -281,7 +281,7 @@ def PlotGeneMutDist(genelength, sub_nums, indel_nums, plotfile, cumulplotfile, t
     linear = [x / float(genelength) for x in xs]
     pylab.plot(xs, cumul, 'r-', label='actual')
     pylab.plot(xs, linear, 'b--', label='uniform')
-    pylab.gca().set_xlim([0.5, genelength + 0.5])
+    pylab.gca().set_xlim([0.5, genelength])
     pylab.gca().set_ylim([0, 1])
     pylab.ylabel('cumulative fraction')
     pylab.gca().yaxis.set_major_locator(matplotlib.ticker.FixedLocator([0, 0.5, 1]))
