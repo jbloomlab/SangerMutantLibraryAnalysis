@@ -16,7 +16,7 @@ Analyses
 ----------
 Here are the analyses (each in its own subdirectory) performed with this script:
 
-* ``2013Analysis_Influenza_NP_Aichi68`` contains the results of analyzing a mutant library of the A/Aichi/2/1968 (H3N2) influenza gene. Analysis performed by `Jesse Bloom`_ using `SangerMutantLibraryAnalysis v0.1`_.
+* ``2013Analysis_Influenza_NP_Aichi68`` contains the results of analyzing a mutant library of the A/Aichi/2/1968 (H3N2) influenza gene. Analysis performed by `Jesse Bloom`_ using `SangerMutantLibraryAnalysis v0.21`_.
 
 * ``2014Analysis_Influenza_HA_WSN`` contains the results of analyzing a mutant library of the A/WSN/1933 (H1N1) influenza gene. Analysis performed by `Jesse Bloom`_ using `SangerMutantLibraryAnalysis v0.2`_.
 
