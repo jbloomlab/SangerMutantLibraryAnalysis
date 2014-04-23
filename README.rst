@@ -202,3 +202,4 @@ The produced PDF files are as follows:
 .. _`ImageMagick convert` : http://www.imagemagick.org/script/convert.php
 .. _`SangerMutantLibraryAnalysis v0.2`: https://github.com/jbloom/SangerMutantLibraryAnalysis/tree/v0.2
 .. _`SangerMutantLibraryAnalysis v0.1`: https://github.com/jbloom/SangerMutantLibraryAnalysis/tree/v0.1
+.. _`SangerMutantLibraryAnalysis v0.21`: https://github.com/jbloom/SangerMutantLibraryAnalysis/tree/v0.21
