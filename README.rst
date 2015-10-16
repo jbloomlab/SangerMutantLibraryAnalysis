@@ -6,7 +6,7 @@ SangerMutantLibraryAnalysis
 Summary
 -----------
 
-This is a script for analyzing the distribution of mutations among Sanger-sequenced clones in a mutant library of a protein-coding gene. The distributions of mutations are analyzed and plotted.
+This is a `Python`_ script for analyzing the distribution of mutations among Sanger-sequenced clones in a mutant library of a protein-coding gene. The distributions of mutations are analyzed and plotted.
 
 The script for this analysis is available `on GitHub`_.
 
