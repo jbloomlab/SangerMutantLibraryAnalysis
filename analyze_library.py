@@ -1,6 +1,8 @@
 """Script to analyze mutations to a coding sequence.
 
-Written by Jesse Bloom, 2013."""
+Written by Jesse Bloom, 2013
+
+Edited by Hugh Haddox, October-16-2015"""
 
 import re
 import os
@@ -33,7 +35,7 @@ def TranslateCodon(codon):
     return genetic_code[codon.upper()]
 
 
-def PlotMutationClustering(mutation_nums_by_clone, ncodons, plotfile, title, nsimulations=1000):
+def PlotMutationClustering(mutation_nums_by_clone, ncodons, plotfile, title, mutstart, nsimulations=1000):
     """Plots clustering of mutations versus null expectation of no clustering.
 
     This function addresses the question of whether clones with multiple
@@ -53,10 +55,14 @@ def PlotMutationClustering(mutation_nums_by_clone, ncodons, plotfile, title, nsi
     plotfile -> name of the plot file we create.
     title -> string giving the plot title.
     nsimulations -> number of simulations for each clone. Is 1000 by default.
+    mutstart -> specifies the first codon in the mutated segment of the gene
+        (integer). This variable will be used to truncate the gene to the
+        appropriate length for simulating the random distribution of distances
+        between mutations.
     """
-    actual_distances = dict([(i, 0) for i in range(1, ncodons)])
-    simulated_distances = dict([(i, 0) for i in range(1, ncodons)])
-    codons = [i for i in range(1, ncodons + 1)]
+    actual_distances = dict([(i, 0) for i in range(1, ncodons - mutstart + 1)])
+    simulated_distances = dict([(i, 0) for i in range(1, ncodons - mutstart + 1)])
+    codons = [i for i in range(1, ncodons - mutstart + 2)]
     nactual = nsimulated = 0
     for mutpositions in mutation_nums_by_clone:
         nmuts = len(mutpositions)
@@ -77,7 +83,7 @@ def PlotMutationClustering(mutation_nums_by_clone, ncodons, plotfile, title, nsi
     actual_cumul = []
     simulated_cumul = []
     actual_tot = simul_tot = 0.0
-    for d in range(1, ncodons):
+    for d in range(1, ncodons - mutstart + 1):
         actual_tot += actual_distances[d] / float(nactual)
         simul_tot += simulated_distances[d] / float(nsimulated)
         actual_cumul.append(actual_tot)
@@ -86,7 +92,7 @@ def PlotMutationClustering(mutation_nums_by_clone, ncodons, plotfile, title, nsi
     (lmargin, rmargin, bmargin, tmargin) = (0.13, 0.01, 0.21, 0.07)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
     barwidth = 0.7
-    xs = [x for x in range(1, ncodons)]
+    xs = [x for x in range(1, ncodons - mutstart + 1)]
     assert len(xs) == len(actual_cumul) == len(simulated_cumul)
     pred = pylab.plot(xs, simulated_cumul, 'b--')
     actual = pylab.plot(xs, actual_cumul, 'r-')
@@ -190,7 +196,7 @@ def PlotNMutDist(nmutations, plotfile, title):
     title -> string giving the plot title.
     """
     pylab.figure(figsize=(3.5, 2.25))
-    (lmargin, rmargin, bmargin, tmargin) = (0.16, 0.01, 0.21, 0.07)
+    (lmargin, rmargin, bmargin, tmargin) = (0.20, 0.01, 0.21, 0.07)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
     nseqs = len(nmutations)
     mavg = scipy.mean(nmutations)
@@ -227,7 +233,7 @@ def PlotNMutDist(nmutations, plotfile, title):
     pylab.show()
 
 
-def PlotGeneMutDist(genelength, sub_nums, indel_nums, plotfile, cumulplotfile, title):
+def PlotGeneMutDist(genelength, sub_nums, indel_nums, plotfile, cumulplotfile, title, mutstart):
     """Plots mutation distribution along a gene.
 
     genelength -> length of gene (integer)
@@ -237,11 +243,13 @@ def PlotGeneMutDist(genelength, sub_nums, indel_nums, plotfile, cumulplotfile, t
         site.
     cumulplotfile -> string giving name of cumulative distribution plot file.
     title -> string giving plot title
+    mutstart -> specifies the first codon in the mutated portion of the gene (integer).
+        The cumulative and uniform distributions will begin at this position.
     """
     nsubs = len(sub_nums)
     if not nsubs:
         raise ValueError("empty sub_nums")
-    xs = [i for i in range(1, genelength + 1)]
+    xs = [i for i in range(mutstart, genelength + 1)]
     subs = dict([(x, 0) for x in xs])
     indels = dict([(x, 0) for x in xs])
     for x in sub_nums:
@@ -253,11 +261,11 @@ def PlotGeneMutDist(genelength, sub_nums, indel_nums, plotfile, cumulplotfile, t
     barwidth = 1.0
     xlefts = [x - barwidth / 2. for x in xs]
     pylab.figure(figsize=(5.5, 2.5))
-    (lmargin, rmargin, bmargin, tmargin) = (0.1, 0.01, 0.2, 0.09)
+    (lmargin, rmargin, bmargin, tmargin) = (0.1, 0.03, 0.2, 0.09)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
     pylab.bar(xlefts, subs, width=barwidth)
     pylab.bar(xlefts, indels, width=barwidth)
-    pylab.gca().set_xlim([0.5, genelength + 0.5])
+    pylab.gca().set_xlim([mutstart - 0.5, genelength + 0.5])
     yticker = matplotlib.ticker.MultipleLocator(1)
     pylab.gca().yaxis.set_major_locator(yticker)
     ymax = max(subs + indels)
@@ -270,18 +278,18 @@ def PlotGeneMutDist(genelength, sub_nums, indel_nums, plotfile, cumulplotfile, t
     pylab.show()
     # make cumulative distribution plot
     cumul = []
-    for x in range(1, genelength + 1):
+    for i in range(len(subs)):
         if cumul:
-            cumul.append(cumul[-1] + subs[x - 1] / float(nsubs))
+            cumul.append(cumul[-1] + subs[i] / float(nsubs))
         else:
-            cumul.append(subs[x - 1] / float(nsubs))
+            cumul.append(subs[i] / float(nsubs))
     pylab.figure(figsize=(4.5, 2.25))
-    (lmargin, rmargin, bmargin, tmargin) = (0.13, 0.01, 0.21, 0.07)
+    (lmargin, rmargin, bmargin, tmargin) = (0.13, 0.04, 0.21, 0.07)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
-    linear = [x / float(genelength) for x in xs]
+    linear = [(x-mutstart+1) / float(genelength-mutstart+1) for x in xs]
     pylab.plot(xs, cumul, 'r-', label='actual')
     pylab.plot(xs, linear, 'b--', label='uniform')
-    pylab.gca().set_xlim([0.5, genelength])
+    pylab.gca().set_xlim([mutstart, genelength])
     pylab.gca().set_ylim([0, 1])
     pylab.ylabel('cumulative fraction')
     pylab.gca().yaxis.set_major_locator(matplotlib.ticker.FixedLocator([0, 0.5, 1]))
@@ -360,7 +368,10 @@ def main():
     mfile = raw_input("\nEnter the name of the file containing the list of mutations: ").strip()
     if not os.path.isfile(mfile):
         raise IOError("Cannot find specified file %s" % mfile)
-
+	
+    # get the position of the first codon in the mutated portion of the gene
+    mutstart = int(raw_input("\nEnter the position of the first codon in the mutated segment of the gene: ").strip())
+	
     # begin looping over input libraries
     print "\nReading mutations from %s" % mfile
     clones = [line for line in open(mfile).readlines() if (not line.isspace()) and line[0] != '#']
@@ -380,17 +391,21 @@ def main():
         allmutations += mutations
         imutation_nums_by_clone = []
         for (wtcodon, icodon, mutcodon) in mutations:
+            if icodon < mutstart:
+                raise ValueError("This line reports a mutation before the beginning of the mutated segment of the gene: %s" %line)
             imutation_nums_by_clone.append(icodon)
             sub_nums.append(icodon)
         mutation_nums_by_clone.append(imutation_nums_by_clone)
         for icodon in indels:
+            if icodon < mutstart:
+                raise ValueError("This line reports an indel before the beginning of the mutated segment of the gene: %s" %line)
             indel_nums.append(icodon)
     sub_nums.sort()
     indel_nums.sort()
     print "\nSubstitutions begin at following positions: %s" % ', '.join([str(s) for s in sub_nums])
     print "\nIndels begin at following positions: %s" % ', '.join([str(s) for s in indel_nums])
-    denom = float(ncodons * len(clones))
-    print "\nFound a total of %d substitutions out of %d codons sequenced (%.4f)" % (len(allmutations), ncodons * len(clones), len(allmutations) / denom)
+    denom = float((ncodons - mutstart + 1) * len(clones))
+    print "\nFound a total of %d substitutions out of %d codons sequenced (%.4f)" % (len(allmutations), (ncodons - mutstart + 1) * len(clones), len(allmutations) / denom)
     n_nmuts = {1:0, 2:0, 3:0}
     n_muttypes = {'synonymous':0, 'nonsynonymous':0, 'stop codon':0}
     for (wt, i, m) in allmutations:
@@ -415,7 +430,7 @@ def main():
     print "\nOverall summary:\n%d clones, avg. %.1f codon substitutions, avg. %.1f indels" % (nclones, len(sub_nums) / float(nclones), len(indel_nums) / float(nclones))
     print "\nNow creating the output PDF plot files..."
     title = ''
-    PlotGeneMutDist(ncodons, sub_nums, indel_nums, "mutpositions.pdf", "mutpositions_cumulative.pdf", title)
+    PlotGeneMutDist(ncodons, sub_nums, indel_nums, "mutpositions.pdf", "mutpositions_cumulative.pdf", title, mutstart)
     os.system('convert -density 150 mutpositions.pdf mutpositions.jpg')
     os.system('convert -density 150 mutpositions_cumulative.pdf mutpositions_cumulative.jpg')
     PlotNMutDist(nmutations, 'nmutdist.pdf', '')
@@ -424,7 +439,7 @@ def main():
     os.system('convert -density 150 ncodonmuts.pdf ncodonmuts.jpg')
     PlotCodonMutNTComposition(allmutations, 'codonmutntcomposition.pdf', '')
     os.system('convert -density 150 codonmutntcomposition.pdf codonmutntcomposition.jpg')
-    PlotMutationClustering(mutation_nums_by_clone, ncodons, 'mutationclustering.pdf', '')
+    PlotMutationClustering(mutation_nums_by_clone, ncodons, 'mutationclustering.pdf', '', mutstart)
     os.system('convert -density 150 mutationclustering.pdf mutationclustering.jpg')
     print "The output PDF file plots have now all been created.\n\nScript complete."
 

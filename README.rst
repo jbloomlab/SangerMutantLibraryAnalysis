@@ -39,7 +39,7 @@ The analysis is performed by the script *analyze_library.py*. To run the script,
 
 The script will then ask you to enter the names of two input files: the sequence file, and the mutation list file. These are both text files that should have the following format:
 
-    * **The sequence file:** this is simply a FASTA file that contains a single protein-coding gene. This should be the gene that you are sequencing. For example, here is an example of such a file (``Aichi68-NP.fasta``)::
+    * **The sequence file:** this is simply a FASTA file that contains a single protein-coding gene. This should be the gene that you are sequencing. For example, here is an example of such a file (``WSN-HA.fasta``)::
 
         >WSN-HA
         ATGAAGGCAAAACTACTGGTCCTGTTATATGCATTTGTAGCTACAGATGCAGACACAATATGTATAGGCTACCATGCGAACAACTCAACCGACACTGTTGACACAATACTCGAGAAGAATGTGGCAGTGACACATTCTGTTAACCTGCTCGAAGACAGCCACAACGGGAAACTATGTAAATTAAAAGGAATAGCCCCACTACAATTGGGGAAATGTAACATCACCGGATGGCTCTTGGGAAATCCAGAATGCGACTCACTGCTTCCAGCGAGATCATGGTCCTACATTGTAGAAACACCAAACTCTGAGAATGGAGCATGTTATCCAGGAGATCTCATCGACTATGAGGAACTGAGGGAGCAATTGAGCTCAGTATCATCATTAGAAAGATTCGAAATATTTCCCAAGGAAAGTTCATGGCCCAACCACACATTCAACGGAGTAACAGTATCATGCTCCCATAGGGGAAAAAGCAGTTTTTACAGAAATTTGCTATGGCTGACGAAGAAGGGGGATTCATACCCAAAGCTGACCAATTCCTATGTGAACAATAAAGGGAAAGAAGTCCTTGTACTATGGGGTGTTCATCACCCGTCTAGCAGTGATGAGCAACAGAGTCTCTATAGTAATGGAAATGCTTATGTCTCTGTAGCGTCTTCAAATTATAACAGGAGATTCACCCCGGAAATAGCTGCAAGGCCCAAAGTAAGAGATCAACATGGGAGGATGAACTATTACTGGACCTTGCTAGAACCCGGAGACACAATAATATTTGAGGCAACTGGTAATCTAATAGCACCATGGTATGCTTTCGCACTGAGTAGAGGGTTTGAGTCCGGCATCATCACCTCAAACGCGTCAATGCATGAGTGTAACACGAAGTGTCAAACACCCCAGGGAGCTATAAACAGCAATCTCCCTTTCCAGAATATACACCCAGTCACAATAGGAGAGTGCCCAAAATATGTCAGGAGTACCAAATTGAGGATGGTTACAGGACTAAGAAACATCCCATCCATTCAATACAGAGGTCTATTTGGAGCCATTGCTGGTTTTATTGAGGGGGGATGGACTGGAATGATAGATGGATGGTATGGTTATCATCATCAGAATGAACAGGGATCAGGCTATGCAGCGGATCAAAAAAGCACACAAAATGCCATTAACGGGATTACAAACAAGGTGAACTCTGTTATCGAGAAAATGAACACTCAATTCACAGCTGTGGGTAAAGAATTCAACAACTTAGAAAAAAGGATGGAAAATTTAAATAAAAAAGTTGATGATGGGTTTCTGGACATTTGGACATATAATGCAGAATTGTTAGTTCTACTGGAAAATGAAAGGACTTTGGATTTCCATGACTTAAATGTGAAGAATCTGTACGAGAAAGTAAAAAGCCAATTAAAGAATAATGCCAAAGAAATCGGAAATGGGTGTTTTGAGTTCTACCACAAGTGTGACAATGAATGCATGGAAAGTGTAAGAAATGGGACTTATGATTATCCAAAATATTCAGAAGAATCAAAGTTGAACAGGGAAAAGATAGATGGAGTGAAATTGGAATCAATGGGGGTGTATCAGATTCTGGCGATCTACTCAACTGTCGCCAGTTCACTGGTGCTTTTGGTCTCCCTGGGGGCAATCAGTTTCTGGATGTGTTCTAATGGGTCTTTGCAGTGCAGAATATGCATCTGA 
@@ -108,10 +108,12 @@ The script will then ask you to enter the names of two input files: the sequence
         3-11: T606G
         3-12: ATT1162CTA
 
+The script will also ask you to enter the codon number of the first codon in the mutagenized region of the gene. This allows specification of an arbitrary start codon for mutagenesis. Codon numbering should follow a (1, 2, ...) numbering scheme, where the first codon in the gene is indexed as codon 1, the second as codon 2, etc. For example, if the entire gene was mutagenized, you should enter 1. However, if the mutagenzied region does not start until codon 25, you should enter 25.
+
 Output of the script
 ----------------------
 
-The script will print some information about the mutation statistics to standard output. It will also create some PDF plot files. For example, running the script using the example sequence file *Aichi68-NP.fasta* and the example mutation list *mutation_list.txt* provided with this script `on GitHub`_ will produce the following information printed to standard output::
+The script will print some information about the mutation statistics to standard output. It will also create some PDF plot files. For example, running the script using the example sequence file *WSN-HA.fasta* and the example mutation list *wsn_mutations_090413.txt* provided with this script `on GitHub`_ will produce the following information printed to standard output::
 
     Beginning analysis.
 
@@ -119,6 +121,8 @@ The script will print some information about the mutation statistics to standard
     Read a coding sequence of length 1698
 
     Enter the name of the file containing the list of mutations: wsn_mutations_090413.txt
+
+    Enter the position of the first codon in the mutated segment of the gene: 1
 
     Reading mutations from wsn_mutations_090413.txt
     Read entries for 34 clones
