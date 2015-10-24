@@ -2,7 +2,8 @@
 
 Written by Jesse Bloom, 2013
 
-Edited by Hugh Haddox, October-16-2015"""
+Edited by Hugh Haddox, October-16-2015
+Added optional command line argument parsing by Mike Doud October 23 2015"""
 
 import re
 import os
@@ -14,6 +15,9 @@ matplotlib.use('pdf') # use the PDF backend
 matplotlib.rc('legend', fontsize=12)
 import pylab
 import scipy.stats
+import argparse
+
+
 
 
 
@@ -355,8 +359,20 @@ def ReadClone(line, seq):
 def main():
     """Main body of script."""
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--outputprefix", help="optional prefix for output files generated")
+    parser.add_argument("--seqfile", help="name of FASTA file containing the gene sequence")
+    parser.add_argument("--mfile", help="name of the file containing the list of mutations")
+    parser.add_argument("--mutstart", help="position of the first codon in the mutated segment of the gene")
+    parser.add_argument("--title", help="title for plots generated")
+    args = parser.parse_args()
+
     print "\nBeginning analysis."
-    seqfile = raw_input("\nEnter the name of the FASTA file containing the gene sequence: ").strip()
+
+    if not args.seqfile:
+        seqfile = raw_input("\nEnter the name of the FASTA file containing the gene sequence: ").strip()
+    else:
+        seqfile = args.seqfile
     if not os.path.isfile(seqfile):
         raise IOError("Cannot find specified file %s" % seqfile)
     seq = open(seqfile).readlines()[1].strip().upper()
@@ -365,12 +381,18 @@ def main():
     ncodons = len(seq) // 3
 
     # read sequence
-    mfile = raw_input("\nEnter the name of the file containing the list of mutations: ").strip()
+    if not args.mfile:
+        mfile = raw_input("\nEnter the name of the file containing the list of mutations: ").strip()
+    else:
+        mfile = args.mfile
     if not os.path.isfile(mfile):
         raise IOError("Cannot find specified file %s" % mfile)
 	
     # get the position of the first codon in the mutated portion of the gene
-    mutstart = int(raw_input("\nEnter the position of the first codon in the mutated segment of the gene: ").strip())
+    if not args.mutstart:
+        mutstart = int(raw_input("\nEnter the position of the first codon in the mutated segment of the gene: ").strip())
+    else:
+        mutstart = int(args.mutstart)
 	
     # begin looping over input libraries
     print "\nReading mutations from %s" % mfile
@@ -429,18 +451,28 @@ def main():
     nclones = len(clone_d)
     print "\nOverall summary:\n%d clones, avg. %.1f codon substitutions, avg. %.1f indels" % (nclones, len(sub_nums) / float(nclones), len(indel_nums) / float(nclones))
     print "\nNow creating the output PDF plot files..."
-    title = ''
-    PlotGeneMutDist(ncodons, sub_nums, indel_nums, "mutpositions.pdf", "mutpositions_cumulative.pdf", title, mutstart)
-    os.system('convert -density 150 mutpositions.pdf mutpositions.jpg')
-    os.system('convert -density 150 mutpositions_cumulative.pdf mutpositions_cumulative.jpg')
-    PlotNMutDist(nmutations, 'nmutdist.pdf', '')
-    os.system('convert -density 150 nmutdist.pdf nmutdist.jpg')
-    PlotNCodonMuts(allmutations, 'ncodonmuts.pdf', '')
-    os.system('convert -density 150 ncodonmuts.pdf ncodonmuts.jpg')
-    PlotCodonMutNTComposition(allmutations, 'codonmutntcomposition.pdf', '')
-    os.system('convert -density 150 codonmutntcomposition.pdf codonmutntcomposition.jpg')
-    PlotMutationClustering(mutation_nums_by_clone, ncodons, 'mutationclustering.pdf', '', mutstart)
-    os.system('convert -density 150 mutationclustering.pdf mutationclustering.jpg')
+    
+    if not args.title:
+        title = ''
+    else:
+        title = args.title
+
+    if not args.outputprefix:
+        outputprefix = ''
+    else:
+        outputprefix = args.outputprefix
+
+    PlotGeneMutDist(ncodons, sub_nums, indel_nums, "%s_mutpositions.pdf" % outputprefix, "%s_mutpositions_cumulative.pdf" % outputprefix, title, mutstart)
+    os.system('convert -density 150 %s_mutpositions.pdf %s_mutpositions.jpg' % (outputprefix, outputprefix))
+    os.system('convert -density 150 %s_mutpositions_cumulative.pdf %s_mutpositions_cumulative.jpg' % (outputprefix, outputprefix))
+    PlotNMutDist(nmutations, '%s_nmutdist.pdf' % outputprefix, '')
+    os.system('convert -density 150 %s_nmutdist.pdf %s_nmutdist.jpg' % (outputprefix, outputprefix))
+    PlotNCodonMuts(allmutations, '%s_ncodonmuts.pdf' % outputprefix, '')
+    os.system('convert -density 150 %s_ncodonmuts.pdf %s_ncodonmuts.jpg' % (outputprefix, outputprefix))
+    PlotCodonMutNTComposition(allmutations, '%s_codonmutntcomposition.pdf' % outputprefix, '')
+    os.system('convert -density 150 %s_codonmutntcomposition.pdf %s_codonmutntcomposition.jpg' % (outputprefix, outputprefix))
+    PlotMutationClustering(mutation_nums_by_clone, ncodons, '%s_mutationclustering.pdf' % outputprefix, '', mutstart)
+    os.system('convert -density 150 %s_mutationclustering.pdf %s_mutationclustering.jpg' % (outputprefix, outputprefix))
     print "The output PDF file plots have now all been created.\n\nScript complete."
 
 
