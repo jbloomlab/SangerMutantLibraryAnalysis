@@ -20,6 +20,7 @@ Here are the analyses (each in its own subdirectory) performed with this script:
 
 * ``2014Analysis_Influenza_HA_WSN`` contains the results of analyzing a mutant library of the A/WSN/1933 (H1N1) influenza gene. Analysis performed by `Jesse Bloom`_ using `SangerMutantLibraryAnalysis v0.2`_.
 
+* ``2015Analysis_Influenza_HA_WSN_lowermutationrate`` contains the results of analyzing additional mutant libraries of the A/WSN/1933 (H1N1) influenza gene after only a single round of mutagenesis to attain a lower overall mutation rate.  These analysis are also broken up by replicate library and by cloning vector and the commands used to run the analysis using new command-line argument options are in the file ``Example_commands``.
 
 Requirements
 ---------------
@@ -109,6 +110,22 @@ The script will then ask you to enter the names of two input files: the sequence
         3-12: ATT1162CTA
 
 The script will also ask you to enter the codon number of the first codon in the mutagenized region of the gene. This allows specification of an arbitrary start codon for mutagenesis. Codon numbering should follow a (1, 2, ...) numbering scheme, where the first codon in the gene is indexed as codon 1, the second as codon 2, etc. For example, if the entire gene was mutagenized, you should enter 1. However, if the mutagenzied region does not start until codon 25, you should enter 25.
+
+If you don't want to manually type in this information when you run the script, you can provide it on the command line when calling the script as shown below, see ``Example_commands`` for examples of how to call the script with all the necessary information provided on the command line.
+
+usage: analyze_library.py [-h] [--outputprefix OUTPUTPREFIX]
+                          [--seqfile SEQFILE] [--mfile MFILE]
+                          [--mutstart MUTSTART] [--title TITLE]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --outputprefix OUTPUTPREFIX
+                        optional prefix for output files generated
+  --seqfile SEQFILE     name of FASTA file containing the gene sequence
+  --mfile MFILE         name of the file containing the list of mutations
+  --mutstart MUTSTART   position of the first codon in the mutated segment of
+                        the gene
+  --title TITLE         title for plots generated
 
 Output of the script
 ----------------------
