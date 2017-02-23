@@ -1,0 +1,11 @@
+python analyze_library.py --outputprefix 2015Analysis_Influenza_HA_WSN_lowermutationrate/results_all --seqfile 2015Analysis_Influenza_HA_WSN_lowermutationrate/wsn_ha_coding.fa --mfile 2015Analysis_Influenza_HA_WSN_lowermutationrate/allclones --mutstart 1 --title AllClones
+
+python analyze_library.py --outputprefix 2015Analysis_Influenza_HA_WSN_lowermutationrate/results_pHH --seqfile 2015Analysis_Influenza_HA_WSN_lowermutationrate/wsn_ha_coding.fa --mfile 2015Analysis_Influenza_HA_WSN_lowermutationrate/pHHclones --mutstart 1 --title pHHClones
+
+python analyze_library.py --outputprefix 2015Analysis_Influenza_HA_WSN_lowermutationrate/results_pHW --seqfile 2015Analysis_Influenza_HA_WSN_lowermutationrate/wsn_ha_coding.fa --mfile 2015Analysis_Influenza_HA_WSN_lowermutationrate/pHWclones --mutstart 1 --title pHWClones
+
+python analyze_library.py --outputprefix 2015Analysis_Influenza_HA_WSN_lowermutationrate/results_lib1 --seqfile 2015Analysis_Influenza_HA_WSN_lowermutationrate/wsn_ha_coding.fa --mfile 2015Analysis_Influenza_HA_WSN_lowermutationrate/lib1clones --mutstart 1 --title lib1Clones
+
+python analyze_library.py --outputprefix 2015Analysis_Influenza_HA_WSN_lowermutationrate/results_lib2 --seqfile 2015Analysis_Influenza_HA_WSN_lowermutationrate/wsn_ha_coding.fa --mfile 2015Analysis_Influenza_HA_WSN_lowermutationrate/lib2clones --mutstart 1 --title lib2Clones
+
+python analyze_library.py --outputprefix 2015Analysis_Influenza_HA_WSN_lowermutationrate/results_lib3 --seqfile 2015Analysis_Influenza_HA_WSN_lowermutationrate/wsn_ha_coding.fa --mfile 2015Analysis_Influenza_HA_WSN_lowermutationrate/lib3clones --mutstart 1 --title lib3Clones
