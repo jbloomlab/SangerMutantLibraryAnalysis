@@ -1,0 +1,37 @@
+#pHW 1-16
+clone1: GT706TA, TC941CA, delA953
+clone2: GAA247TGT, CCA298GCT
+clone3: None
+clone4: AA667GC
+clone5: AGC1147TCT
+#clone6: TCA85GGC
+#clone7: TC850AA
+#clone8: None
+#clone9: None
+#clone10: TAT343CTA, AA667TG, TTC811AAG, ATT1045CAA
+#clone11: can't parse due to poor sequencing quality.
+#clone12: AAC79TCT
+#clone13: None
+#clone14: None
+#clone15: TT1046AA, GGA1075AGT
+#clone16: GAG832AAC
+
+
+#pHH: 17-32
+#clone17: GA314CG, but can't parse the rest of the gene due to poor sequencing quality.
+clone18: AAC436TGG
+clone19: None
+clone20: None
+clone21: CA524TT, A1456T
+#clone22: C849A, delC860
+#clone23: None
+#clone24: A1286C
+#clone25: TAC736CAG, CCA799GGG, ACT1603GCC
+#clone26: None
+#clone27: None
+#clone28: TGG1090GTT
+#clone29: CTG352TCC, TGG1069CCC, delG1096
+#clone30: C21G, C669A
+#clone31: None
+#clone32: CTT262TCC
+

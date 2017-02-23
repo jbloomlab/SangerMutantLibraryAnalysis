@@ -3,7 +3,9 @@
 Written by Jesse Bloom, 2013
 
 Edited by Hugh Haddox, October-16-2015
-Added optional command line argument parsing by Mike Doud October 23 2015"""
+Added optional command line argument parsing by Mike Doud October 23 2015
+Fixed x-axis integer bug...
+"""
 
 import re
 import os
@@ -179,8 +181,8 @@ def PlotNCodonMuts(allmutations, plotfile, title):
     pred = pylab.plot(xs, nexpected, 'rx', markersize=6, mew=3)
     pylab.gca().set_xlim([0.5, 3.5])
     pylab.gca().set_ylim([0, max(nactual + nexpected) * 1.1])
-    pylab.gca().xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
-    pylab.gca().yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(5))
+    pylab.gca().xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
+    pylab.gca().yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(5, integer=True))
     pylab.xlabel('nucleotide changes in codon')
     pylab.ylabel('number of mutations')
     pylab.legend((bar[0], pred[0]), ('actual', 'expected'), loc='upper left', numpoints=1, handlelength=0.9, borderaxespad=0, handletextpad=0.4)
@@ -213,8 +215,8 @@ def PlotNMutDist(nmutations, plotfile, title):
     pred = pylab.plot(nmuts, npoisson, 'rx', markersize=6, mew=3)
     pylab.gca().set_xlim([-0.5, xmax + 0.5])
     pylab.gca().set_ylim([0, max(nactual) + 1.5])
-    pylab.gca().xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
-    pylab.gca().yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(5))
+    pylab.gca().xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
+    pylab.gca().yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
     pylab.xlabel('number of mutated codons')
     pylab.ylabel('number of clones')
     pylab.legend((bar[0], pred[0]), ('actual', 'Poisson'), loc='upper right', numpoints=1, handlelength=1.2, ncol=1, borderaxespad=0)
