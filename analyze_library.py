@@ -5,6 +5,8 @@ Written by Jesse Bloom, 2013
 Edited by Hugh Haddox, October-16-2015
 Added optional command line argument parsing by Mike Doud October 23 2015
 Fixed x-axis integer bug...
+Edited by Allie Greaney, November-22-2018
+Fixed x-axis bar alignment bug and converted to python3.
 """
 
 import re
@@ -46,7 +48,7 @@ def PlotMutationClustering(mutation_nums_by_clone, ncodons, plotfile, title, mut
 
     This function addresses the question of whether clones with multiple
     mutations tend to have those mutations clustered in primary sequence.
-    Clones with <2 mutations are not considered. For every clone with >= 2 
+    Clones with <2 mutations are not considered. For every clone with >= 2
     mutations, records the distance in primary sequence between each pair
     of mutations. Then performs nsimulations simulations of placing this
     number of mutations at random on a gene, and records the distance in
@@ -119,7 +121,7 @@ def PlotCodonMutNTComposition(allmutations, plotfile, title):
     """Plots nucleotide composition of mutant codons and mtuated.
 
     For each site containing a mutated codon, looks at the nucleotide
-    composition of all three sites at the original and new codon. Plots the 
+    composition of all three sites at the original and new codon. Plots the
     overall frequency of each nucleotide at these sites.
 
     allmutations -> list of all mutations as tuples (wtcodon, r, mutcodon)
@@ -139,12 +141,12 @@ def PlotCodonMutNTComposition(allmutations, plotfile, title):
     (lmargin, rmargin, bmargin, tmargin) = (0.16, 0.01, 0.21, 0.07)
     pylab.axes([lmargin, bmargin, 1.0 - lmargin - rmargin, 1.0 - bmargin - tmargin])
     barwidth = 0.35
-    xs = [i for i in range(len(nts))]
-    nwt = pylab.bar([x - barwidth for x in xs], [wtntcounts[nt] for nt in nts], width=barwidth, color='blue')
-    nmut = pylab.bar([x for x in xs], [mutntcounts[nt] for nt in nts], width=barwidth, color='red')
-    #pred = pylab.plot(xs, nexpected, 'rx', markersize=6, mew=3)
     pylab.gca().set_xlim([-0.5, 3.5])
-    pylab.gca().set_ylim([0, max(wtntcounts.values() + mutntcounts.values()) * 1.35])
+    pylab.gca().set_ylim([0, max(list(wtntcounts.values()) + list(mutntcounts.values())) * 1.35])
+    xs = [i for i in range(len(nts))]
+    nwt = pylab.bar([x - barwidth/2 for x in xs], [wtntcounts[nt] for nt in nts], width=barwidth, color='blue')
+    nmut = pylab.bar([x + barwidth/2 for x in xs], [mutntcounts[nt] for nt in nts], width=barwidth, color='red')
+    #pred = pylab.plot(xs, nexpected, 'rx', markersize=6, mew=3)
     #pylab.gca().xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
     pylab.gca().yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(5))
     pylab.xlabel('nucleotide')
@@ -177,7 +179,7 @@ def PlotNCodonMuts(allmutations, plotfile, title):
     xs = [1, 2, 3]
     nactual = [nchanges[x] for x in xs]
     nexpected = [nmuts * 9. / 63., nmuts * 27. / 63., nmuts * 27. / 63.]
-    bar = pylab.bar([x - barwidth / 2.0 for x in xs], nactual, width=barwidth)
+    bar = pylab.bar([x for x in xs], nactual, width=barwidth)
     pred = pylab.plot(xs, nexpected, 'rx', markersize=6, mew=3)
     pylab.gca().set_xlim([0.5, 3.5])
     pylab.gca().set_ylim([0, max(nactual + nexpected) * 1.1])
@@ -211,7 +213,7 @@ def PlotNMutDist(nmutations, plotfile, title):
     nmuts = [i for i in range(xmax + 1)]
     nactual = [nmutations.count(n) for n in nmuts]
     npoisson = [nseqs * math.exp(-mavg) * mavg**n / math.factorial(n) for n in nmuts]
-    bar = pylab.bar([n - barwidth / 2.0 for n in nmuts], nactual, width=barwidth)
+    bar = pylab.bar([n for n in nmuts], nactual, width=barwidth)
     pred = pylab.plot(nmuts, npoisson, 'rx', markersize=6, mew=3)
     pylab.gca().set_xlim([-0.5, xmax + 0.5])
     pylab.gca().set_ylim([0, max(nactual) + 1.5])
@@ -225,13 +227,13 @@ def PlotNMutDist(nmutations, plotfile, title):
     def F(n):
         return scipy.stats.poisson.cdf(n, mavg)
     (d, p) = scipy.stats.kstest(scipy.array(nmutations), F)
-#    pylab.text(0.98, 0.6, 
+#    pylab.text(0.98, 0.6,
 #        'P = %.3f for Kolmogorov-Smirnov test of\n' % p +\
 #        'whether actual distribution would differ\n' +\
 #        'from Poisson at least this much by chance.',
 #        horizontalalignment='right',
 #        verticalalignment='bottom',
-#        transform=pylab.gca().transAxes, 
+#        transform=pylab.gca().transAxes,
 #        fontsize=11)
     pylab.title(title, fontsize=12)
     pylab.savefig(plotfile)
@@ -369,37 +371,37 @@ def main():
     parser.add_argument("--title", help="title for plots generated")
     args = parser.parse_args()
 
-    print "\nBeginning analysis."
+    print("\nBeginning analysis.")
 
     if not args.seqfile:
-        seqfile = raw_input("\nEnter the name of the FASTA file containing the gene sequence: ").strip()
+        seqfile = input("\nEnter the name of the FASTA file containing the gene sequence: ").strip()
     else:
         seqfile = args.seqfile
     if not os.path.isfile(seqfile):
         raise IOError("Cannot find specified file %s" % seqfile)
     seq = open(seqfile).readlines()[1].strip().upper()
-    print "Read a coding sequence of length %d" % len(seq)
+    print("Read a coding sequence of length %d" % len(seq))
     assert len(seq) % 3 == 0, "Sequence length is not a multiple of three."
     ncodons = len(seq) // 3
 
     # read sequence
     if not args.mfile:
-        mfile = raw_input("\nEnter the name of the file containing the list of mutations: ").strip()
+        mfile = input("\nEnter the name of the file containing the list of mutations: ").strip()
     else:
         mfile = args.mfile
     if not os.path.isfile(mfile):
         raise IOError("Cannot find specified file %s" % mfile)
-	
+
     # get the position of the first codon in the mutated portion of the gene
     if not args.mutstart:
-        mutstart = int(raw_input("\nEnter the position of the first codon in the mutated segment of the gene: ").strip())
+        mutstart = int(input("\nEnter the position of the first codon in the mutated segment of the gene: ").strip())
     else:
         mutstart = int(args.mutstart)
-	
+
     # begin looping over input libraries
-    print "\nReading mutations from %s" % mfile
+    print("\nReading mutations from %s" % mfile)
     clones = [line for line in open(mfile).readlines() if (not line.isspace()) and line[0] != '#']
-    print "Read entries for %d clones" % len(clones)
+    print("Read entries for %d clones" % len(clones))
     clone_d = {}
     sub_nums = []
     indel_nums = []
@@ -426,10 +428,10 @@ def main():
             indel_nums.append(icodon)
     sub_nums.sort()
     indel_nums.sort()
-    print "\nSubstitutions begin at following positions: %s" % ', '.join([str(s) for s in sub_nums])
-    print "\nIndels begin at following positions: %s" % ', '.join([str(s) for s in indel_nums])
+    print("\nSubstitutions begin at following positions: %s" % ', '.join([str(s) for s in sub_nums]))
+    print("\nIndels begin at following positions: %s" % ', '.join([str(s) for s in indel_nums]))
     denom = float((ncodons - mutstart + 1) * len(clones))
-    print "\nFound a total of %d substitutions out of %d codons sequenced (%.4f)" % (len(allmutations), (ncodons - mutstart + 1) * len(clones), len(allmutations) / denom)
+    print("\nFound a total of %d substitutions out of %d codons sequenced (%.4f)" % (len(allmutations), (ncodons - mutstart + 1) * len(clones), len(allmutations) / denom))
     n_nmuts = {1:0, 2:0, 3:0}
     n_muttypes = {'synonymous':0, 'nonsynonymous':0, 'stop codon':0}
     for (wt, i, m) in allmutations:
@@ -444,16 +446,16 @@ def main():
             n_muttypes['stop codon'] += 1
         else:
             n_muttypes['nonsynonymous'] += 1
-    print "\nHere are the fractions with different numbers of nucleotide mutations:"
+    print("\nHere are the fractions with different numbers of nucleotide mutations:")
     for n in range(1, 4):
-        print "  %d nucleotide mutations: %.5f" % (n, n_nmuts[n] / denom)
-    print "\nHere are the fractions of mutation types"
+        print("  %d nucleotide mutations: %.5f" % (n, n_nmuts[n] / denom))
+    print("\nHere are the fractions of mutation types")
     for key in ['synonymous', 'nonsynonymous', 'stop codon']:
-        print "  %s: %.5f" % (key, n_muttypes[key] / denom)
+        print("  %s: %.5f" % (key, n_muttypes[key] / denom))
     nclones = len(clone_d)
-    print "\nOverall summary:\n%d clones, avg. %.1f codon substitutions, avg. %.1f indels" % (nclones, len(sub_nums) / float(nclones), len(indel_nums) / float(nclones))
-    print "\nNow creating the output PDF plot files..."
-    
+    print("\nOverall summary:\n%d clones, avg. %.1f codon substitutions, avg. %.1f indels" % (nclones, len(sub_nums) / float(nclones), len(indel_nums) / float(nclones)))
+    print("\nNow creating the output PDF plot files...")
+
     if not args.title:
         title = ''
     else:
@@ -475,7 +477,7 @@ def main():
     os.system('convert -density 150 %s_codonmutntcomposition.pdf %s_codonmutntcomposition.jpg' % (outputprefix, outputprefix))
     PlotMutationClustering(mutation_nums_by_clone, ncodons, '%s_mutationclustering.pdf' % outputprefix, '', mutstart)
     os.system('convert -density 150 %s_mutationclustering.pdf %s_mutationclustering.jpg' % (outputprefix, outputprefix))
-    print "The output PDF file plots have now all been created.\n\nScript complete."
+    print("The output PDF file plots have now all been created.\n\nScript complete.")
 
 
 main() # run the script
