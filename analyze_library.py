@@ -7,6 +7,8 @@ Added optional command line argument parsing by Mike Doud October 23 2015
 Fixed x-axis integer bug...
 Edited by Allie Greaney, November-22-2018
 Fixed x-axis bar alignment bug and converted to python3.
+Edited by Allie Greaney, August-13-2019
+Fixed bug that led to non-counting of STOP codons.
 """
 
 import re
@@ -442,7 +444,7 @@ def main():
         mutaa = TranslateCodon(m)
         if wtaa == mutaa:
             n_muttypes['synonymous'] += 1
-        elif wtaa and not mutaa:
+        elif wtaa != '*' and mutaa == '*':
             n_muttypes['stop codon'] += 1
         else:
             n_muttypes['nonsynonymous'] += 1
