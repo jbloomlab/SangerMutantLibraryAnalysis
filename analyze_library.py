@@ -5,10 +5,18 @@ Written by Jesse Bloom, 2013
 Edited by Hugh Haddox, October-16-2015
 Added optional command line argument parsing by Mike Doud October 23 2015
 Fixed x-axis integer bug...
+
 Edited by Allie Greaney, November-22-2018
 Fixed x-axis bar alignment bug and converted to python3.
-Edited by Allie Greaney, August-13-2019
+
+Edited Allie Greaney August-13-2019
 Fixed bug that led to non-counting of STOP codons.
+
+Edited Allie Greaney August-14-2019
+Added command line argument option for NNS mutagenesis.
+Added function to read in wild type gene sequence to string.
+Added function to calculate the fraction of mutations expected to be 1, 2, or 3-nt changes based on the nt composition of the wt gene. 
+Modified PlotNCodonMuts function to reflect the expected nt changes if NNS mutagenesis was used. 
 """
 
 import re
@@ -23,8 +31,17 @@ import pylab
 import scipy.stats
 import argparse
 
-
-
+def readFasta(inFile):
+    """Gets wild type gene sequence from FASTA file"""
+    
+    f = open(inFile, 'r')
+    gene = ''
+    for line in f:
+        if line.startswith('>'):
+            seq_ID = line[1:].rstrip()
+        else:
+            gene += line.rstrip().upper()
+    return gene
 
 
 def TranslateCodon(codon):
@@ -44,6 +61,35 @@ def TranslateCodon(codon):
         'AGG':'R', 'GGT':'G', 'GGC':'G', 'GGA':'G', 'GGG':'G'}
     return genetic_code[codon.upper()]
 
+def CalculateNNSfrac(wt):
+    """Calculates the expected fraction of mutations when NNS mutagenesis is used.
+    
+    wt is the nucleotide sequence of the mutagenized gene.  
+    """
+    # permitted nucleotides 
+    nts = ['A', 'C', 'T', 'G']
+
+    # count the number of A, C, T, and Gs in sequence
+    nt_counts = {}
+    for nt in nts:
+        nt_counts[nt] = wt.count(nt)
+
+    # get percentage of AorT and CorG for the wt sequence 
+    AorT = ( nt_counts['A'] + nt_counts['T'] ) / len(wt)
+    CorG = ( nt_counts['C'] + nt_counts['G'] ) / len(wt)
+
+    # the expected fraction of mutations that are 1, 2 or 3 nt depends on the wt gene sequence
+    expected_frac = []
+
+    # If the WT codon ends in AorT, there are 2, 12, or 18 possible 1, 2, or 3 nt mutations, respectively. 
+    # If the WT codon ends in CorG, there are 7, 15, or 9 possible 1, 2, or 3 nt mutations, respectively. 
+    AorTpossiblemuts = [2, 12, 18]
+    CorGpossiblemuts = [7, 15, 9]
+
+    for x in range(3):
+        expected_frac.append(AorTpossiblemuts[x] / sum(AorTpossiblemuts) * AorT + CorGpossiblemuts[x] / sum(CorGpossiblemuts) * CorG) 
+    
+    return expected_frac
 
 def PlotMutationClustering(mutation_nums_by_clone, ncodons, plotfile, title, mutstart, nsimulations=1000):
     """Plots clustering of mutations versus null expectation of no clustering.
@@ -161,12 +207,14 @@ def PlotCodonMutNTComposition(allmutations, plotfile, title):
     pylab.show()
 
 
-def PlotNCodonMuts(allmutations, plotfile, title):
+def PlotNCodonMuts(allmutations, plotfile, title, wtseq, NNS=False):
     """Plots number of nucleotide changes per codon mutation.
 
     allmutations -> list of all mutations as tuples (wtcodon, r, mutcodon)
     plotfile -> name of the plot file we create.
     title -> string giving the plot title.
+    wtseq -> the nucleotide sequence of the full gene 
+    NNS -> boolean. True if NNS mutagenesis was used. (this only works totally properly if the whole gene is mutagenized!)
     """
     pylab.figure(figsize=(3.5, 2.25))
     (lmargin, rmargin, bmargin, tmargin) = (0.16, 0.01, 0.21, 0.07)
@@ -180,7 +228,15 @@ def PlotNCodonMuts(allmutations, plotfile, title):
     barwidth = 0.6
     xs = [1, 2, 3]
     nactual = [nchanges[x] for x in xs]
-    nexpected = [nmuts * 9. / 63., nmuts * 27. / 63., nmuts * 27. / 63.]
+    if NNS:
+        # must use other means of calculating expected number of mutations
+        print("NNS mutagenesis was used.")
+        frac_expected = CalculateNNSfrac(wtseq)
+        nexpected = [nmuts * frac_expected[0], nmuts * frac_expected[1], nmuts * frac_expected[2]]
+    else:
+        # then NNN mutagenesis was used, and we use Jesse's original calculations for expected mutations
+        nexpected = [nmuts * 9. / 63., nmuts * 27. / 63., nmuts * 27. / 63.]
+    print(f"The expected number of 1, 2, and 3 nucleotide mutations: {nexpected}")
     bar = pylab.bar([x for x in xs], nactual, width=barwidth)
     pred = pylab.plot(xs, nexpected, 'rx', markersize=6, mew=3)
     pylab.gca().set_xlim([0.5, 3.5])
@@ -371,6 +427,7 @@ def main():
     parser.add_argument("--mfile", help="name of the file containing the list of mutations")
     parser.add_argument("--mutstart", help="position of the first codon in the mutated segment of the gene")
     parser.add_argument("--title", help="title for plots generated")
+    parser.add_argument("--NNS", default=False, help="True if NNS mutagenesis was used")
     args = parser.parse_args()
 
     print("\nBeginning analysis.")
@@ -399,7 +456,10 @@ def main():
         mutstart = int(input("\nEnter the position of the first codon in the mutated segment of the gene: ").strip())
     else:
         mutstart = int(args.mutstart)
-
+    
+    # Get the wild type gene sequenced - will only need this for NNS mutagenesis, however
+    wtgene = readFasta(seqfile)
+    
     # begin looping over input libraries
     print("\nReading mutations from %s" % mfile)
     clones = [line for line in open(mfile).readlines() if (not line.isspace()) and line[0] != '#']
@@ -467,13 +527,18 @@ def main():
         outputprefix = ''
     else:
         outputprefix = args.outputprefix
+    
+    if not args.NNS:
+        NNS = False
+    else:
+        NNS = args.NNS
 
     PlotGeneMutDist(ncodons, sub_nums, indel_nums, "%s_mutpositions.pdf" % outputprefix, "%s_mutpositions_cumulative.pdf" % outputprefix, title, mutstart)
     os.system('convert -density 150 %s_mutpositions.pdf %s_mutpositions.jpg' % (outputprefix, outputprefix))
     os.system('convert -density 150 %s_mutpositions_cumulative.pdf %s_mutpositions_cumulative.jpg' % (outputprefix, outputprefix))
     PlotNMutDist(nmutations, '%s_nmutdist.pdf' % outputprefix, '')
     os.system('convert -density 150 %s_nmutdist.pdf %s_nmutdist.jpg' % (outputprefix, outputprefix))
-    PlotNCodonMuts(allmutations, '%s_ncodonmuts.pdf' % outputprefix, '')
+    PlotNCodonMuts(allmutations, '%s_ncodonmuts.pdf' % outputprefix, '', wtgene, NNS)
     os.system('convert -density 150 %s_ncodonmuts.pdf %s_ncodonmuts.jpg' % (outputprefix, outputprefix))
     PlotCodonMutNTComposition(allmutations, '%s_codonmutntcomposition.pdf' % outputprefix, '')
     os.system('convert -density 150 %s_codonmutntcomposition.pdf %s_codonmutntcomposition.jpg' % (outputprefix, outputprefix))
